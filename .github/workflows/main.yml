@@ -1,0 +1,55 @@
+name: Combined Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Dev
+        run: python dev.py
+
+  test:
+    runs-on: ubuntu-latest
+    needs: dev   # Dev successful → then Test runs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Test
+        run: python test.py
+
+  prod:
+    runs-on: ubuntu-latest
+    needs: test  # Test successful → then Prod runs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Prod
+        run: python prod.py
