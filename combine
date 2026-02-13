@@ -1,7 +1,0 @@
-jobs:
-dev:
-  python dev.py
-test
-  python test.py
-prod
-  python prod.py
